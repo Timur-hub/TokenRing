@@ -10,7 +10,7 @@ public class Node implements Runnable{
     private final Queue<Tokens> queue;
     private int nodeNumber;
     static List<Long> listOfTimes = new ArrayList<>();
-    AtomicInteger counter;
+    AtomicInteger counterOfToken = new AtomicInteger();
     boolean work = true;
 
     public Node(int nodeNumber) {
@@ -41,16 +41,21 @@ public class Node implements Runnable{
 
     private void readToken() {
         Tokens token = getToken();
+        throughputSpeed();
         if (token.destinationId != nodeNumber) {
             nextNode.recieveToken(token);
         } else {
             if(!token.isRead.get()){
-                    token.isRead.set(true);
+                token.isRead.set(true);
             } else {
                 token.timeStamp.add(System.nanoTime());
             }
             nextNode.recieveToken(token);
         }
+    }
+
+    private void throughputSpeed() {
+        counterOfToken.getAndIncrement();
     }
 
     private Tokens getToken() {

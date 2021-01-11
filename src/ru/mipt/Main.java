@@ -15,12 +15,12 @@ public class Main {
     private static void launchTokenRing(String nodes, String tokens) throws InterruptedException {
         PrintWriter out = null;
         PrintWriter out2 = null;
-        try {
-             //out = new PrintWriter(new FileWriter("/Users/eugenegoldyrev/IdeaProjects/NewTokenRing/src/test.txt"));
-             out2 = new PrintWriter(new FileWriter("/Users/eugenegoldyrev/IdeaProjects/NewTokenRing/src/test2.txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            //out = new PrintWriter(new FileWriter("/Users/eugenegoldyrev/IdeaProjects/NewTokenRing/src/test.txt"));
+//            out2 = new PrintWriter(new FileWriter("/Users/eugenegoldyrev/IdeaProjects/NewTokenRing/src/test2.txt"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         int numberOfNodes = Integer.parseInt(nodes);
         int numberOfTokens = Integer.parseInt(tokens);
@@ -31,23 +31,31 @@ public class Main {
 
         Tokens[] arrayOfTokens = new Tokens[numberOfTokens];
         fillArrayOfTokens(arrayOfTokens);
-        fillFirstQueue(arrayOfNodes[0], arrayOfTokens);
+        //fillFirstQueue(arrayOfNodes[0], arrayOfTokens);
+
         launcher(arrayOfNodes);
+
+        fillQueues(arrayOfNodes, arrayOfTokens);
 
 //        ПРОГРЕВ
 //        Thread.sleep(1000);
 //        fillFirstQueue(arrayOfNodes[0], arrayOfTokens);
 
-        Thread.sleep(10000);
+        Thread.sleep(6000);
+
 
         System.out.println("Done");
 
-        for (int i = 0; i < arrayOfTokens.length ; i++) {
-            for (int j = 1; j < arrayOfTokens[i].timeStamp.size(); j++) {
-                out2.println(arrayOfTokens[i].timeStamp.get(j) - arrayOfTokens[i].timeStamp.get(j - 1));
-            }
+        for (int i = 0; i < arrayOfNodes.length; i++) {
+            System.out.println(arrayOfNodes[i].counterOfToken.get());
         }
-    }
+
+//        for (int i = 0; i < arrayOfTokens.length ; i++) {
+//            for (int j = 1; j < arrayOfTokens[i].timeStamp.size(); j++) {
+//                out2.println(arrayOfTokens[i].timeStamp.get(j) - arrayOfTokens[i].timeStamp.get(j - 1));
+//            }
+//        }
+}
 
     private static void launcher(Node[] arrayOfNodes) throws InterruptedException {
         for (Node node : arrayOfNodes) {
@@ -86,6 +94,14 @@ public class Main {
     private static void fillFirstQueue(Node arrayOfNode, Tokens[] arrayOfTokens) throws InterruptedException {
         for (int i = 0; i < arrayOfTokens.length ; i++) {
             arrayOfNode.recieveToken(arrayOfTokens[i]);
+        }
+    }
+
+    private static void fillQueues(Node[] arrayOfNode, Tokens[] arrayOfTokens) throws InterruptedException {
+        for (int j = 0; j < arrayOfNode.length; j++) {
+            for (int i = 0; i < arrayOfTokens.length ; i++) {
+                arrayOfNode[j].recieveToken(arrayOfTokens[i]);
+            }
         }
     }
 }
